@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF8EF">
+  <title>Samen · Oude Gracht-West</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <button id="logo" class="logo" type="button" aria-label="Samen, Oude Gracht-West">
+      <span class="logo-mark" aria-hidden="true">🏘️</span>
+      <span><strong id="app-name">Samen</strong><small id="hood">Oude Gracht-West</small></span>
+    </button>
+    <button id="profile-btn" class="avatar-btn" type="button" aria-label="Mijn profiel"></button>
+  </header>
+
+  <main id="main" tabindex="-1"></main>
+
+  <nav class="tabs" aria-label="Hoofdmenu">
+    <a href="#overzicht"><span aria-hidden="true">🏠</span>Overzicht</a>
+    <a href="#agenda"><span aria-hidden="true">📅</span>Agenda</a>
+    <a href="#hulpbord"><span aria-hidden="true">🤝</span>Hulpbord</a>
+    <a href="#plaatsen" class="plus"><span aria-hidden="true">＋</span>Plaatsen</a>
+  </nav>
+
+  <!-- Welkomstscherm (eerste keer openen) -->
+  <section id="welcome" class="welcome" hidden>
+    <form id="welcome-form" class="card">
+      <p class="logo-mark big" aria-hidden="true">🏘️</p>
+      <h1>Welkom bij Samen</h1>
+      <p>De app voor buren in <strong>Oude Gracht-West</strong>. Vertel kort wie je bent.</p>
+      <label>Je voornaam
+        <input name="name" required autocomplete="given-name" maxlength="30">
+      </label>
+      <label>Je straat
+        <input name="street" required list="streets" autocomplete="off" maxlength="40">
+      </label>
+      <button class="btn primary" type="submit">Aan de slag</button>
+      <p class="small">Je gegevens blijven alleen op deze telefoon.</p>
+    </form>
+  </section>
+
+  <datalist id="streets"></datalist>
+
+  <!-- Profiel -->
+  <dialog id="profile">
+    <form id="profile-form" method="dialog">
+      <h2>Mijn profiel</h2>
+      <label>Voornaam <input name="name" required maxlength="30"></label>
+      <label>Straat <input name="street" required list="streets" maxlength="40"></label>
+      <label>Iets over jou <input name="line" maxlength="80" placeholder="Bijv. Ik hou van tuinieren"></label>
+      <div class="row">
+        <button class="btn" value="cancel" formnovalidate>Sluiten</button>
+        <button class="btn primary" value="save">Opslaan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Bevestiging -->
+  <dialog id="confirm">
+    <form method="dialog">
+      <p class="logo-mark big" aria-hidden="true">💛</p>
+      <p id="confirm-text"></p>
+      <button class="btn primary">Oké</button>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
