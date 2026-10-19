@@ -68,8 +68,16 @@
       <span class="logo-mark" aria-hidden="true">🏘️</span>
       <span><strong id="app-name">Samen</strong><small id="hood">Oude Gracht-West</small></span>
     </button>
-    <button id="profile-btn" class="avatar-btn" type="button" aria-label="Mijn profiel"></button>
+    <div class="top-actions">
+      <button id="bell" class="bell" type="button" aria-label="Meldingen">
+        <span aria-hidden="true">🔔</span><span id="bell-badge" class="badge" hidden></span>
+      </button>
+      <button id="profile-btn" class="avatar-btn" type="button" aria-label="Mijn profiel"></button>
+    </div>
   </header>
+
+  <!-- Melding die bovenin binnenschuift -->
+  <button id="banner" class="banner" type="button"></button>
 
   <main id="main" tabindex="-1"></main>
 
@@ -117,12 +125,27 @@
     </form>
   </dialog>
 
-  <!-- Bevestiging -->
-  <dialog id="confirm">
-    <form method="dialog">
-      <p class="logo-mark big" aria-hidden="true">💛</p>
-      <p id="confirm-text"></p>
-      <button class="btn primary">Oké</button>
+  <!-- Meldingen -->
+  <dialog id="notifs" class="sheet">
+    <div class="sheet-head">
+      <h2>Meldingen</h2>
+      <button class="close" type="button" data-close aria-label="Sluiten">✕</button>
+    </div>
+    <div id="notif-list" class="notif-list"></div>
+  </dialog>
+
+  <!-- Gesprek met een buur (de buur antwoordt vanzelf) -->
+  <dialog id="chat" class="sheet chat">
+    <div class="sheet-head">
+      <p id="chat-who" class="byline"></p>
+      <button class="close" type="button" data-close aria-label="Sluiten">✕</button>
+    </div>
+    <p id="chat-about" class="chat-about"></p>
+    <div id="chat-log" class="chat-log" aria-live="polite"></div>
+    <div id="chat-chips" class="chips"></div>
+    <form id="chat-form" class="chat-form">
+      <input name="msg" autocomplete="off" maxlength="300" placeholder="Schrijf een bericht…" aria-label="Bericht">
+      <button class="send" aria-label="Versturen">➤</button>
     </form>
   </dialog>
 

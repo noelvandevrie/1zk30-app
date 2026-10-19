@@ -458,6 +458,47 @@ window.DATA = {
     },
   ],
 
+  // Meldingen achter het belletje rechtsboven.
+  //  - "minutesAgo": staat er al als je de app opent
+  //  - "after": schuift pas na zoveel seconden bovenin binnen (handig voor de video)
+  //  - "from" toont het gezichtje van een buur, anders wordt "icon" gebruikt
+  //  - "link": waar je heen gaat als je op de melding tikt
+  notifications: [
+    { from: "Petra", text: "Petra en 11 anderen gaan naar de burenborrel op het pleintje.", link: "#agenda", minutesAgo: 40 },
+    { icon: "📣", text: "Nieuw buurtportret: Henk en de klaverjasclub.", link: "#nieuws", minutesAgo: 180 },
+    { from: "Fatima", text: "Fatima: \"Morgen koffieochtend in De Schakel, iedereen welkom! ☕\"", link: "#agenda", after: 10 },
+    { from: "Gerda", text: "Gerda zoekt een lift naar het ziekenhuis. Kun jij helpen?", link: "#hulpbord", after: 30 },
+    { icon: "🏛️", text: "Gemeente: grofvuil wordt voortaan elke eerste dinsdag opgehaald.", link: "#nieuws", after: 55 },
+    { from: "Henk", text: "Henk en 5 anderen gaan vandaag klaverjassen. Doe je mee?", link: "#agenda", after: 80 },
+  ],
+
+  // Wie er (in de demo) na een paar seconden reageert op wat je zelf plaatst.
+  responders: {
+    activiteit: { from: "Ria" },
+    vraag: { from: "Joost", street: "Molenkade", text: "Hoi! Ik kan je daar wel mee helpen. Wanneer komt het je uit?" },
+    aanbod: { from: "Sanne", street: "Lindelaan", text: "Wat aardig van je! Daar maak ik graag gebruik van. Kan ik een keer langskomen?" },
+  },
+
+  // Gesprekken: snelle antwoorden voor jou ("chips") en wat de buur
+  // daarna terugstuurt, in deze volgorde.
+  //  - vraag: jij helpt iemand met een hulpvraag
+  //  - aanbod: jij neemt iemands hulpaanbod aan
+  //  - mine: een buur reageerde op jouw eigen bericht
+  chat: {
+    vraag: {
+      chips: ["Ik kan je helpen!", "Wanneer heb je het nodig?", "Ik bel straks even aan"],
+      replies: ["Wat fijn, dankjewel! 😊 Komt vanavond rond 19:00 uit?", "Top, dan zie ik je straks. Tot dan! 👋"],
+    },
+    aanbod: {
+      chips: ["Graag! Wanneer kan het?", "Wat aardig, dankjewel!"],
+      replies: ["Graag gedaan! Zaterdagochtend is goed. Bel maar even aan.", "Tot zaterdag! 👋"],
+    },
+    mine: {
+      chips: ["Super, dankjewel!", "Komt morgen om 10:00 uit?"],
+      replies: ["Morgen om 10:00 is prima. Ik bel even aan!", "Tot morgen! 👋"],
+    },
+  },
+
   // Nieuws komt alleen van de bewonersvereniging of de gemeente.
   // "story" is optioneel: een langer verhaal dat in de kaart uitklapt.
   // Lege regel in story = nieuwe alinea.
