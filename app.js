@@ -72,7 +72,7 @@ function helpPosts() {
   return [...mine, ...seed].sort((a, b) => b.when - a.when);
 }
 
-const news = () => D.news.map((n) => ({ ...n, when: addDays(-n.daysAgo) }));
+const news = () => D.news.map((n) => ({ ...n, when: addDays(-n.daysAgo) })).sort((a, b) => b.when - a.when);
 
 // ---------- Kaarten ----------
 
@@ -165,7 +165,14 @@ const views = {
       ${helpPosts().slice(0, 2).map(helpCard).join("")}
       <a class="more" href="#hulpbord">Naar het hulpbord →</a>
       <h2>Nieuws uit de buurt</h2>
-      ${news().slice(0, 3).map(newsCard).join("")}`;
+      ${news().slice(0, 3).map(newsCard).join("")}
+      <a class="more" href="#nieuws">Alle nieuws →</a>`;
+  },
+  nieuws() {
+    return `
+      <h1>Nieuws</h1>
+      <p class="lead">Berichten van de bewonersvereniging en de gemeente.</p>
+      ${news().map(newsCard).join("")}`;
   },
   agenda() {
     const list = events();
@@ -208,15 +215,15 @@ function postFields(type) {
   if (type === "activiteit") {
     const min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}T00:00`;
     return `
-      <label>Wat ga je doen? <input name="title" required maxlength="60" placeholder="Bijv. Samen soep eten"></label>
+      <label>Wat ga je doen? <input name="title" required maxlength="60" placeholder="Bijv. Samen naar de speeltuin"></label>
       <label>Wanneer? <input name="at" type="datetime-local" required min="${min}"></label>
-      <label>Waar? <input name="place" required maxlength="60" placeholder="Bijv. Bij mij in de tuin"></label>
+      <label>Waar? <input name="place" required maxlength="60" placeholder="Bijv. Speeltuin Kastanjestraat"></label>
       ${catField}`;
   }
   const ask = type === "vraag";
   return `
     <label>${ask ? "Waar heb je hulp bij nodig?" : "Wat kun je doen of uitlenen?"}
-      <input name="title" required maxlength="60" placeholder="${ask ? "Bijv. Wie kan mijn ladder lenen?" : "Bijv. Ik kan zaterdag boodschappen doen"}">
+      <input name="title" required maxlength="60" placeholder="${ask ? "Bijv. Wie kan woensdag even oppassen?" : "Bijv. Ik heb een buggy te leen"}">
     </label>
     <label>Toelichting <textarea name="text" rows="3" maxlength="300" placeholder="Wanneer, hoe lang, wat precies?"></textarea></label>
     ${catField}`;
@@ -342,11 +349,23 @@ $("#logo").addEventListener("click", () => {
   }
 });
 
+// ---------- Startanimatie: verdwijnt vanzelf, of tik om over te slaan ----------
+
+const splash = $("#splash");
+function hideSplash() {
+  if (!splash.isConnected) return;
+  splash.remove();
+  if (!S.me) $("#welcome input").focus();
+}
+splash.addEventListener("animationend", (ev) => {
+  if (ev.target === splash) hideSplash();
+});
+splash.addEventListener("click", hideSplash);
+
 // ---------- Start ----------
 
-$("#app-name").textContent = D.appName;
-$("#hood").textContent = D.neighbourhood;
+$("#app-name").textContent = $("#splash-name").textContent = D.appName;
+$("#hood").textContent = $("#splash-hood").textContent = D.neighbourhood;
 document.title = `${D.appName} · ${D.neighbourhood}`;
 $("#welcome").hidden = !!S.me;
 if (S.me) render();
-else $("#welcome input").focus();

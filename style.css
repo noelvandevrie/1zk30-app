@@ -319,3 +319,66 @@ dialog h2 { margin-top: 0; }
   pointer-events: none;
 }
 .toast.show { opacity: 1; transform: none; }
+
+/* ---------- Startanimatie ---------- */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--bg);
+  cursor: pointer;
+  animation: splash-out 0.45s ease 2.5s forwards;
+}
+.splash-art { width: min(320px, 85vw); height: auto; }
+.splash-name {
+  margin: 18px 0 0;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--accent);
+  animation: fade-up 0.5s ease 1.1s both;
+}
+.splash-hood {
+  margin: 4px 0 0;
+  font-size: 1.15rem;
+  color: var(--muted);
+  animation: fade-up 0.5s ease 1.3s both;
+}
+
+.splash .house {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: grow 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+  animation-delay: calc(var(--i) * 0.12s);
+}
+.splash .win {
+  fill: rgb(0 0 0 / 0.25);
+  animation: light-on 0.3s ease forwards;
+  animation-delay: calc(0.8s + var(--w) * 0.07s);
+}
+.splash .heart {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) 1.8s both;
+}
+.splash .wave { animation: drift 3s linear infinite; }
+.splash .wave.slow { animation-duration: 5s; }
+
+@keyframes grow { from { transform: scaleY(0); } }
+@keyframes light-on { to { fill: #FFD27A; } }
+@keyframes pop { from { transform: scale(0); opacity: 0; } }
+@keyframes drift { to { transform: translateX(40px); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(12px); } }
+@keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash { animation-delay: 1s; }
+  .splash * { animation: none !important; }
+  .splash .win { fill: #FFD27A; }
+}

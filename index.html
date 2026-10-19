@@ -8,6 +8,61 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Startanimatie: grachtenpandjes, lichtjes gaan aan. Tik om over te slaan. -->
+  <div id="splash" class="splash" aria-hidden="true">
+    <svg class="splash-art" viewBox="0 0 300 150">
+      <g class="house" style="--i:0">
+        <path fill="#2F5D50" d="M20 120V70h6v-8h6v-8h6v-8h14v8h6v8h6v8h6v50z"/>
+        <rect class="win" x="30" y="72" width="10" height="12" style="--w:4"/>
+        <rect class="win" x="50" y="72" width="10" height="12" style="--w:9"/>
+        <rect class="win" x="30" y="94" width="10" height="12" style="--w:1"/>
+        <rect class="win" x="50" y="94" width="10" height="12" style="--w:6"/>
+      </g>
+      <g class="house" style="--i:1">
+        <path fill="#8C3B1F" d="M74 120V58l22-22 22 22v62z"/>
+        <circle class="win" cx="96" cy="50" r="4" style="--w:11"/>
+        <rect class="win" x="81" y="66" width="10" height="12" style="--w:2"/>
+        <rect class="win" x="101" y="66" width="10" height="12" style="--w:7"/>
+        <rect class="win" x="81" y="90" width="10" height="12" style="--w:5"/>
+        <rect class="win" x="101" y="90" width="10" height="12" style="--w:0"/>
+      </g>
+      <g class="house" style="--i:2">
+        <path fill="#B4441F" d="M122 120V52h7v-9h7v-9h7v-9h14v9h7v9h7v9h7v68z"/>
+        <rect class="win" x="145" y="36" width="10" height="10" style="--w:12"/>
+        <rect class="win" x="128" y="58" width="10" height="12" style="--w:3"/>
+        <rect class="win" x="145" y="58" width="10" height="12" style="--w:8"/>
+        <rect class="win" x="162" y="58" width="10" height="12" style="--w:1"/>
+        <rect class="win" x="128" y="80" width="10" height="12" style="--w:10"/>
+        <rect class="win" x="162" y="80" width="10" height="12" style="--w:4"/>
+        <rect fill="#6E2510" x="144" y="100" width="12" height="20" rx="6" ry="6"/>
+      </g>
+      <g class="house" style="--i:3">
+        <path fill="#7A5A00" d="M182 120V60q0-14 12-14 2-10 10-10t10 10q12 0 12 14v60z"/>
+        <circle class="win" cx="204" cy="49" r="4" style="--w:9"/>
+        <rect class="win" x="189" y="62" width="10" height="12" style="--w:6"/>
+        <rect class="win" x="209" y="62" width="10" height="12" style="--w:0"/>
+        <rect class="win" x="189" y="86" width="10" height="12" style="--w:11"/>
+        <rect class="win" x="209" y="86" width="10" height="12" style="--w:3"/>
+      </g>
+      <g class="house" style="--i:4">
+        <path fill="#1F4E79" d="M230 120V66l25-22 25 22v54z"/>
+        <rect class="win" x="240" y="74" width="10" height="12" style="--w:7"/>
+        <rect class="win" x="260" y="74" width="10" height="12" style="--w:2"/>
+        <rect class="win" x="240" y="96" width="10" height="12" style="--w:10"/>
+        <rect class="win" x="260" y="96" width="10" height="12" style="--w:5"/>
+      </g>
+      <path class="heart" fill="#B4441F" d="M150 17c-7-5-9-9-6-12 2-2 5-1 6 1 1-2 4-3 6-1 3 3 1 7-6 12z"/>
+      <rect fill="#B9A994" x="0" y="119" width="300" height="4"/>
+      <rect fill="#E8EEF7" x="0" y="123" width="300" height="27"/>
+      <path class="wave" fill="none" stroke="#9DB9CC" stroke-width="2" stroke-linecap="round"
+        d="M-40 132q10-4 20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0"/>
+      <path class="wave slow" fill="none" stroke="#B8CDDB" stroke-width="2" stroke-linecap="round"
+        d="M-40 142q10-3 20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0t20 0"/>
+    </svg>
+    <p id="splash-name" class="splash-name">Samen</p>
+    <p id="splash-hood" class="splash-hood">Oude Gracht-West</p>
+  </div>
+
   <header class="top">
     <button id="logo" class="logo" type="button" aria-label="Samen, Oude Gracht-West">
       <span class="logo-mark" aria-hidden="true">🏘️</span>
