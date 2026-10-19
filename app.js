@@ -666,10 +666,13 @@ $("#logo").addEventListener("click", () => {
 
 // ---------- Startanimatie: verdwijnt vanzelf, of tik om over te slaan ----------
 
+// Het scherm eronder schuift al binnen terwijl de startanimatie vervaagt;
+// pas daarna weghalen, anders zie je het eerst stilstaan en dan nog eens binnenkomen.
 const splash = $("#splash");
-function hideSplash() {
-  if (!splash.isConnected) return;
-  splash.remove();
+let started = false;
+function startApp() {
+  if (started) return;
+  started = true;
   if (S.me) {
     enter($("#main"));
     return startDemo();
@@ -677,10 +680,16 @@ function hideSplash() {
   enter($("#welcome-form"));
   $("#welcome input").focus();
 }
-splash.addEventListener("animationend", (ev) => {
-  if (ev.target === splash) hideSplash();
+splash.addEventListener("animationstart", (ev) => {
+  if (ev.target === splash) startApp();
 });
-splash.addEventListener("click", hideSplash);
+splash.addEventListener("animationend", (ev) => {
+  if (ev.target === splash) splash.remove();
+});
+splash.addEventListener("click", () => {
+  splash.remove();
+  startApp();
+});
 
 // ---------- Start ----------
 
