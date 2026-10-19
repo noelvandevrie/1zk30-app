@@ -90,7 +90,7 @@ function eventCard(e) {
   const names = me ? [S.me.name, ...e.going] : e.going;
   const faces = (me ? avatar(S.me.name, "me") : "") + e.going.slice(0, me ? 4 : 5).map((n) => avatar(n)).join("");
   return `
-  <article class="card">
+  <article class="card ${e.id === justPosted ? "fresh" : ""}">
     <div class="card-head">
       <span class="icon" aria-hidden="true">${cat(e.cat).icon}</span>
       <div>
@@ -124,7 +124,7 @@ function helpCard(h) {
   else if (helped) action = `<button class="btn on" disabled>✓ Je hebt gereageerd</button>`;
   else action = `<button class="btn primary" data-help="${esc(h.id)}">${offer ? "Graag!" : "Ik help!"}</button>`;
   return `
-  <article class="card">
+  <article class="card ${h.id === justPosted ? "fresh" : ""}">
     <span class="tag ${offer ? "offer" : "ask"}">${offer ? "Hulpaanbod" : "Hulpvraag"}</span>
     <div class="card-head">
       <span class="icon" aria-hidden="true">${cat(h.cat).icon}</span>
@@ -231,13 +231,68 @@ function postFields(type) {
 
 // ---------- Render ----------
 
-function render() {
+let justPosted = null;
+
+function render(animate = false) {
   const view = location.hash.slice(1);
   const name = views[view] ? view : "overzicht";
   $("#main").innerHTML = views[name]();
+  justPosted = null;
   document.querySelectorAll(".tabs a").forEach((a) =>
     a.toggleAttribute("aria-current", a.getAttribute("href") === "#" + name));
   $("#profile-btn").innerHTML = S.me ? avatar(S.me.name) : "";
+  if (animate) enter($("#main"));
+  else $("#main").classList.remove("enter");
+}
+
+// ---------- Animaties ----------
+
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+// Laat de kinderen van el één voor één in beeld schuiven
+function enter(el) {
+  [...el.children].forEach((c, i) => c.style.setProperty("--n", Math.min(i, 8)));
+  el.classList.remove("enter");
+  void el.offsetWidth;
+  el.classList.add("enter");
+}
+
+// Vervaag el, verberg het daarna en ga verder met then()
+function leave(el, then) {
+  if (reduceMotion.matches) {
+    el.hidden = true;
+    return then();
+  }
+  el.classList.add("leaving");
+  el.addEventListener("animationend", function done(ev) {
+    if (ev.target !== el) return;
+    el.removeEventListener("animationend", done);
+    el.classList.remove("leaving");
+    el.hidden = true;
+    then();
+  });
+}
+
+// Feestelijk spatje vanuit het midden van el
+function burst(el) {
+  if (reduceMotion.matches || !el) return;
+  const r = el.getBoundingClientRect();
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement("span");
+    p.className = "spark";
+    p.style.cssText = `left:${r.left + r.width / 2}px;top:${r.top + r.height / 2}px;background:${COLORS[i % COLORS.length]};border-radius:${i % 2 ? "50%" : "2px"}`;
+    document.body.append(p);
+    const a = Math.random() * Math.PI * 2;
+    const d = 50 + Math.random() * 80;
+    p.animate(
+      [
+        { transform: "translate(0, 0) scale(1) rotate(0)", opacity: 1 },
+        { opacity: 1, offset: 0.6 },
+        { transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d - 40}px) scale(0.3) rotate(${Math.random() * 360}deg)`, opacity: 0 },
+      ],
+      { duration: 650 + Math.random() * 400, easing: "cubic-bezier(.2,.7,.3,1)" },
+    ).onfinish = () => p.remove();
+  }
 }
 
 function navigate(hash) {
@@ -247,7 +302,7 @@ function navigate(hash) {
 
 window.addEventListener("hashchange", () => {
   if (location.hash === "#plaatsen") postType = "activiteit";
-  render();
+  render(true);
   scrollTo(0, 0);
 });
 
@@ -268,7 +323,12 @@ $("#main").addEventListener("click", (ev) => {
     S.going[id] = !S.going[id];
     save();
     render();
-    if (S.going[id]) toast("Leuk! Je staat op de lijst.");
+    if (S.going[id]) {
+      const btn = $(`[data-go="${CSS.escape(id)}"]`);
+      btn.closest(".card").classList.add("joined");
+      burst(btn);
+      toast("Leuk! Je staat op de lijst.");
+    }
     return;
   }
   const help = ev.target.closest("[data-help]");
@@ -302,6 +362,8 @@ $("#main").addEventListener("submit", (ev) => {
     S.posts.unshift({ ...base, text: f.text.trim(), author: S.me.name, street: S.me.street, created: Date.now() });
   }
   save();
+  burst(ev.submitter);
+  justPosted = id;
   navigate(f.type === "activiteit" ? "#agenda" : "#hulpbord");
   toast("Geplaatst! Je buren kunnen het nu zien.");
 });
@@ -315,8 +377,8 @@ $("#welcome-form").addEventListener("submit", (ev) => {
   const f = Object.fromEntries(new FormData(ev.target));
   S.me = { name: f.name.trim(), street: f.street.trim(), line: "" };
   save();
-  $("#welcome").hidden = true;
-  render();
+  burst(ev.submitter);
+  leave($("#welcome"), () => render(true));
 });
 
 $("#profile-btn").addEventListener("click", () => {
@@ -355,7 +417,9 @@ const splash = $("#splash");
 function hideSplash() {
   if (!splash.isConnected) return;
   splash.remove();
-  if (!S.me) $("#welcome input").focus();
+  if (S.me) return enter($("#main"));
+  enter($("#welcome-form"));
+  $("#welcome input").focus();
 }
 splash.addEventListener("animationend", (ev) => {
   if (ev.target === splash) hideSplash();
